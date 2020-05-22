@@ -1,6 +1,27 @@
 package com.shijen.algorithmandds.alogrithms
 
 class InsertionSort : Sorting {
+    override suspend fun sort(array: IntArray): IntArray {
+        if (array.size <= 1) {
+            return array
+        }
+        for (a in (1..(array.size - 1))) {
+            for (x in a - 1 downTo 0) {
+                if (array.get(a) >= array.get(x)) {
+                    val insertionPosition = x + 1
+                    shiftAndInsert(array, a, insertionPosition)
+                    break;
+                } else {
+                    if (x == 0) {
+                        val insertionPosition = x
+                        shiftAndInsert(array, a, insertionPosition)
+                        break;
+                    }
+                }
+            }
+        }
+        return array
+    }
     private fun shiftAndInsert(
         array: IntArray,
         insertionItemPosition: Int,
@@ -24,27 +45,5 @@ class InsertionSort : Sorting {
                 array[a] = array.get(a - 1)
             }
         }
-    }
-
-    override suspend fun sort(array: IntArray): IntArray {
-        if (array.size <= 1) {
-            return array
-        }
-        for (a in (1..(array.size - 1))) {
-            for (x in a - 1 downTo 0) {
-                if (array.get(a) >= array.get(x)) {
-                    val insertionPosition = x + 1
-                    shiftAndInsert(array, a, insertionPosition)
-                    break;
-                } else {
-                    if (x == 0) {
-                        val insertionPosition = x
-                        shiftAndInsert(array, a, insertionPosition)
-                        break;
-                    }
-                }
-            }
-        }
-        return array
     }
 }
