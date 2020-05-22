@@ -26,14 +26,12 @@ class InsertionSort : Sorting {
         }
     }
 
-    override fun sort(array: IntArray): IntArray {
+    override suspend fun sort(array: IntArray): IntArray {
         if (array.size <= 1) {
             return array
         }
         for (a in (1..(array.size - 1))) {
-            //Log.d("Shijen","Outerloop index:"+a+" element:"+array.get(a))
             for (x in a - 1 downTo 0) {
-                //Log.d("Shijen","Innerloop index:"+x+" element:"+array.get(x))
                 if (array.get(a) >= array.get(x)) {
                     val insertionPosition = x + 1
                     shiftAndInsert(array, a, insertionPosition)

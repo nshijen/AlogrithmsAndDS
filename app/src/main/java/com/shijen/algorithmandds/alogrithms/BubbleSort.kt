@@ -1,12 +1,15 @@
 package com.shijen.algorithmandds.alogrithms
 
 class BubbleSort : Sorting {
-    override fun sort(array: IntArray): IntArray {
+    override  suspend fun sort(array: IntArray): IntArray {
         var count = 1
-        while (count < array.size) {
+        var swaped = true
+        while (count < array.size && swaped) {
+            swaped = false
             for (a in 0..((array.size - 1) - count)) {
                 if (array.get(a) > array.get(a + 1)) {
                     swap(array, a, a + 1)
+                    swaped = true
                 }
             }
             count++

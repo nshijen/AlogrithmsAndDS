@@ -20,13 +20,21 @@
             android:id="@+id/insertion_sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Insertion Sort" />
+            android:checked="true"
+            android:text="Insertion Sort"
+            />
 
         <RadioButton
             android:id="@+id/bubble_sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bubble Sort" />
+
+        <RadioButton
+            android:id="@+id/merge_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Merge Sort" />
     </RadioGroup>
 
     <Button
@@ -95,5 +103,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sorting_buttons" />
+
+    <FrameLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#85000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="7dp"
+        android:clickable="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
