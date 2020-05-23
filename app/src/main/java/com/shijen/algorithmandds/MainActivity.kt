@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                 insertion_sort.id -> sortingAlog = SortingAlgorithms.INSERTION_SORT
                 bubble_sort.id -> sortingAlog = SortingAlgorithms.BUBBLE_SORT
                 merge_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
+                selection_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
             }
             tv_alog_name.setText(sortingAlog.alogName)
         }

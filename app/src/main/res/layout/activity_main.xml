@@ -35,6 +35,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Merge Sort" />
+
+        <RadioButton
+            android:id="@+id/selection_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selection Sort" />
     </RadioGroup>
 
     <Button
