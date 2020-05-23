@@ -1,6 +1,6 @@
 package com.shijen.algorithmandds.alogrithms
 
-class SelectionSort :Sorting{
+class SelectionSort:Sorting{
     override suspend fun sort(array: IntArray): IntArray {
         for(a in 0..array.size-1){
             var largeItemPos = 0
@@ -8,11 +8,11 @@ class SelectionSort :Sorting{
                if(array.get(k)>array.get(largeItemPos)){
                    largeItemPos = k;
                }
-                if(k == array.size-a){
-                    val temp = array.get(k)
-                    array[k] = array[largeItemPos]
-                    array[largeItemPos] = temp
-                }
+            }
+            if(largeItemPos != array.size-a){
+                val temp = array.get(array.size-a)
+                array[array.size -a] = array[largeItemPos]
+                array[largeItemPos] = temp
             }
         }
         return  array
