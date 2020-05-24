@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 bubble_sort.id -> sortingAlog = SortingAlgorithms.BUBBLE_SORT
                 merge_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
                 selection_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
+                quick_sort.id -> sortingAlog = SortingAlgorithms.QUICK_SORT
             }
             tv_alog_name.setText(sortingAlog.alogName)
         }
@@ -50,13 +51,14 @@ class MainActivity : AppCompatActivity() {
         val intArray =
             resources.getIntArray(R.array.dummy_100000_array)
             /*intArrayOf(6, 2, 9, -1, 3, 6, 24, 23, 4)*/
+            /*intArrayOf(9,8,7,6,5,4,3,2,1,0,-1,-2)*/
         updateTheInputString(intArray)
         sortTheArray(intArray)
     }
 
     private suspend fun updateTheInputString(intArray: IntArray) {
         withContext(Dispatchers.Main) {
-            if (intArray.size > 10) {
+            if (intArray.size > 20) {
                 tv_input_variables.setText("Array containing 100000 numbers:")
             } else {
                 tv_input_variables.setText(intArray.contentToString())
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     private suspend fun updateTheOutputTimeAndResult(intArray: IntArray, l: Long) {
         withContext(Dispatchers.Main) {
             progress_layout.visibility = View.GONE
-            if (intArray.size > 10) {
+            if (intArray.size > 20) {
                 tv_out_put.setText("Sorted 100000 integers")
             } else {
                 tv_out_put.setText(intArray.contentToString())

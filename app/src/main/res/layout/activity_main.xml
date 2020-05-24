@@ -41,6 +41,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Selection Sort" />
+
+        <RadioButton
+            android:id="@+id/quick_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quick Sort" />
     </RadioGroup>
 
     <Button
