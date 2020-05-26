@@ -5,7 +5,8 @@ enum class SortingAlgorithms(x:Sorting,name:String) {
     BUBBLE_SORT(BubbleSort(),"Bubble Sort"),
     MERGE_SORT(MergeSort(),"Merge_Sort"),
     SELECTION_SORT(SelectionSort(),"Selection_Sort"),
-    QUICK_SORT(QuickSort(),"Quick_Sort");
+    QUICK_SORT(QuickSort(),"Quick_Sort"),
+    HEAP_SORT(HeapSort(),"Heap_Sort");
     val instance = x;
     val alogName = name
 

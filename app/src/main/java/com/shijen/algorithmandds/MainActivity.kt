@@ -32,8 +32,9 @@ class MainActivity : AppCompatActivity() {
                 insertion_sort.id -> sortingAlog = SortingAlgorithms.INSERTION_SORT
                 bubble_sort.id -> sortingAlog = SortingAlgorithms.BUBBLE_SORT
                 merge_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
-                selection_sort.id -> sortingAlog = SortingAlgorithms.MERGE_SORT
+                selection_sort.id -> sortingAlog = SortingAlgorithms.SELECTION_SORT
                 quick_sort.id -> sortingAlog = SortingAlgorithms.QUICK_SORT
+                heap_sort.id -> sortingAlog = SortingAlgorithms.HEAP_SORT
             }
             tv_alog_name.setText(sortingAlog.alogName)
         }
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         startTime = System.currentTimeMillis();
         val sort = sortingAlog.instance.sort(intArray)
         endTime = System.currentTimeMillis()
-        updateTheOutputTimeAndResult(sort, startTime - endTime)
+        updateTheOutputTimeAndResult(sort, endTime - startTime)
     }
 
     private suspend fun updateTheOutputTimeAndResult(intArray: IntArray, l: Long) {

@@ -47,6 +47,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quick Sort" />
+
+        <RadioButton
+            android:id="@+id/heap_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heap Sort" />
     </RadioGroup>
 
     <Button
