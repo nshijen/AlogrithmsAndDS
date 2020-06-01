@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 selection_sort.id -> sortingAlog = SortingAlgorithms.SELECTION_SORT
                 quick_sort.id -> sortingAlog = SortingAlgorithms.QUICK_SORT
                 heap_sort.id -> sortingAlog = SortingAlgorithms.HEAP_SORT
+                radix_sort.id -> sortingAlog = SortingAlgorithms.RADIX_SORT
             }
             tv_alog_name.setText(sortingAlog.alogName)
         }
@@ -50,8 +51,8 @@ class MainActivity : AppCompatActivity() {
 
     suspend fun getResourceIntArray() {
         val intArray =
-            resources.getIntArray(R.array.dummy_100000_array)
-            /*intArrayOf(6, 2, 9, -1, 3, 6, 24, 23, 4)*/
+            /*resources.getIntArray(R.array.dummy_100000_array)*/
+            intArrayOf(6, 2, 9, 34, 3, 6, -1, -11,-132, -4, 24, 23, 4)
             /*intArrayOf(9,8,7,6,5,4,3,2,1,0,-1,-2)*/
         updateTheInputString(intArray)
         sortTheArray(intArray)

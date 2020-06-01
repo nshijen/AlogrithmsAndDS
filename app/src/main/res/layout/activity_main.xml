@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <RadioGroup
         android:id="@+id/sorting_buttons"
         android:layout_width="wrap_content"
@@ -53,6 +54,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Heap Sort" />
+
+        <RadioButton
+            android:id="@+id/radix_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Radix Sort" />
     </RadioGroup>
 
     <Button
