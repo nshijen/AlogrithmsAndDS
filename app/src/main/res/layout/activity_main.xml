@@ -6,61 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <RadioGroup
-        android:id="@+id/sorting_buttons"
+    <TextView
+        android:id="@+id/tv_select_algo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Select An Algorithm"
+        android:textAllCaps="true"
+        android:layout_margin="20dp"
+        style="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title">
-
-        <RadioButton
-            android:id="@+id/insertion_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Insertion Sort"
-            />
-
-        <RadioButton
-            android:id="@+id/bubble_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bubble Sort" />
-
-        <RadioButton
-            android:id="@+id/merge_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Merge Sort" />
-
-        <RadioButton
-            android:id="@+id/selection_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Selection Sort" />
-
-        <RadioButton
-            android:id="@+id/quick_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quick Sort" />
-
-        <RadioButton
-            android:id="@+id/heap_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Heap Sort" />
-
-        <RadioButton
-            android:id="@+id/radix_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Radix Sort" />
-    </RadioGroup>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_execute"
@@ -68,20 +25,47 @@
         android:layout_height="wrap_content"
         android:onClick="sort"
         android:text="Execute"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/colorAccent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_alog_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="20dp" />
+
 
     <TextView
         android:id="@+id/tv_alog_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
         android:padding="10dp"
-        android:text="Alogrithm name"
-        app:layout_constraintBottom_toTopOf="@+id/tv_out_put"
+        android:text="Alogrithm"
+        android:textAllCaps="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_select_algo"
+        android:layout_marginLeft="20dp" />
+
+
+    <TextView
+        android:id="@+id/tv_input_variables"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:padding="10dp"
+        android:text="Input Variables"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintTop_toBottomOf="@id/tv_alog_name" />
 
     <TextView
         android:id="@+id/tv_out_put"
@@ -90,56 +74,47 @@
         android:maxLines="3"
         android:padding="10dp"
         android:text="Output array;"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_time_taken"
+        style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_input_variables" />
 
     <TextView
         android:id="@+id/tv_time_taken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="time taken"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Time taken:"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_out_put" />
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_avg_time_taken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="20dp"
-        android:text="Select the Sorting Alogrithms"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_input_variables"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="3"
         android:padding="10dp"
-        android:text="Input Variables"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Avg Time taken:"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sorting_buttons" />
+        style="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_taken" />
 
     <FrameLayout
         android:id="@+id/progress_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#85000000"
+        android:clickable="true"
+        android:elevation="7dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:elevation="7dp"
-        android:clickable="true"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
@@ -149,5 +124,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </FrameLayout>
+    <LinearLayout
+        android:id="@+id/ll_graphLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
