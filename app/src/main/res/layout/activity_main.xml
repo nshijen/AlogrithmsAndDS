@@ -14,6 +14,7 @@
         android:text="Select An Algorithm"
         android:textAllCaps="true"
         android:layout_margin="20dp"
+        android:elevation="1dp"
         style="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +27,7 @@
         android:onClick="sort"
         android:text="Execute"
         android:layout_marginEnd="20dp"
+        android:elevation="1dp"
         android:backgroundTint="@color/colorAccent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_alog_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +46,7 @@
         android:textAllCaps="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
+        android:elevation="1dp"
         style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +63,7 @@
         android:text="Input Variables"
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
-        
+        android:elevation="1dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +76,7 @@
         android:layout_height="wrap_content"
         android:maxLines="3"
         android:padding="10dp"
+        android:elevation="1dp"
         android:text="Output array;"
         style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -86,6 +90,7 @@
         android:padding="10dp"
         android:text="Time taken:"
         android:layout_marginStart="20dp"
+        android:elevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -97,6 +102,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Avg Time taken:"
+        android:elevation="1dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/TextAppearance.AppCompat.Subhead"
@@ -126,10 +132,12 @@
     </FrameLayout>
     <LinearLayout
         android:id="@+id/ll_graphLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

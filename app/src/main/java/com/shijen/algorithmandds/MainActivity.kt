@@ -1,13 +1,14 @@
 package com.shijen.algorithmandds
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.room.Room
 import com.facebook.stetho.Stetho
 import com.shijen.algorithmandds.alogrithms.SortingAlgorithms
@@ -22,12 +23,12 @@ import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
-    var sortingAlog: SortingAlgorithms
-    var startTime: Long = 0L
-    var endTime: Long = 0L
-    lateinit var db: SortingDatabase
-    var popup: PopupMenu? = null
-    val graphData:HashMap<String,Double>  = HashMap()
+    private var sortingAlog: SortingAlgorithms
+    private var startTime: Long = 0L
+    private var endTime: Long = 0L
+    private lateinit var db: SortingDatabase
+    private var popup: PopupMenu? = null
+    private val graphData: HashMap<String, Double> = HashMap()
 
     init {
         sortingAlog = SortingAlgorithms.INSERTION_SORT
@@ -42,25 +43,40 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     private fun setUpGraph() {
-        CoroutineScope(Dispatchers.IO).launch{
-            for(item in SortingAlgorithms.values()){
+        CoroutineScope(Dispatchers.IO).launch {
+            graphData.clear()
+            for (item in SortingAlgorithms.values()) {
                 val avgTime = getAvgTime(item.alogName)
-                graphData.put(item.alogName,avgTime)
+                graphData[item.alogName] = avgTime
                 println("HASHMAP $graphData")
             }
             updateView()
         }
     }
 
-    suspend fun updateView() {
-
-        for(item in graphData){
+    private suspend fun updateView() {
+        var count = 1
+        withContext(Dispatchers.Main){
+            ll_graphLayout.removeAllViews()
+        }
+        for (item in graphData) {
             val inflate = layoutInflater.inflate(R.layout.histogram_item, null)
-            inflate.tv_histo_time_taken.text = item.key.toString()
-            inflate.v_histogram.layoutParams = ConstraintLayout.LayoutParams(convertDpToPixel(30.toFloat(),this).toInt(),(item.value * convertDpToPixel(15.toFloat(),this)).toInt())
-            withContext(Dispatchers.Main){
+            inflate.v_histogram.layoutParams = LinearLayout.LayoutParams(
+                convertDpToPixel(50.0.toFloat(), this).toInt()
+                , (convertDpToPixel((5 * item.value).toFloat(), this)).toInt()
+            )
+            inflate.tv_histo_time_taken.text = item.value.toString()
+            inflate.tv_algo.text = item.key
+            val value = (360 / 7) * count
+            val valueOf =
+                Color.HSVToColor(floatArrayOf(value.toFloat(), 1.toFloat(), 0.5.toFloat()))
+            inflate.tv_algo.setTextColor(valueOf)
+            inflate.tv_histo_time_taken.setTextColor(valueOf)
+            inflate.v_histogram.setBackgroundColor(valueOf)
+            withContext(Dispatchers.Main) {
                 (ll_graphLayout).addView(inflate)
             }
+            count++
         }
     }
 
@@ -135,13 +151,14 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             println("Output Elements: first 10 ${intArray.take(10)}")
             println("Output Elements: last 10 ${intArray.takeLast(10)}")
         }
+        setUpGraph()
     }
 
     suspend fun insertIntoDb(double: Double, algoName: String) {
         db.getDao().insertSortingData(SortingSpeed(double, algoName))
     }
 
-    suspend fun getAvgTime(algoName: String):Double {
+    suspend fun getAvgTime(algoName: String): Double {
         return db.getDao().getAvgTimeOf(algoName)
     }
 
@@ -170,11 +187,6 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
         tv_alog_name.setText(sortingAlog.alogName)
         return true
-    }
-
-    fun convertPixelsToDp(px: Float, context: Context): Float {
-        return px / (context.getResources()
-            .getDisplayMetrics().densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     fun convertDpToPixel(dp: Float, context: Context): Float {
