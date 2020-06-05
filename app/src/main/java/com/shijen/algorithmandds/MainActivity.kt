@@ -9,11 +9,10 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.room.Room
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.facebook.stetho.Stetho
 import com.shijen.algorithmandds.alogrithms.SortingAlgorithms
-import com.shijen.algorithmandds.db.SortingDatabase
-import com.shijen.algorithmandds.db.SortingSpeed
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.histogram_item.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,43 +22,45 @@ import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
-    private var sortingAlog: SortingAlgorithms
-    private var startTime: Long = 0L
-    private var endTime: Long = 0L
-    private lateinit var db: SortingDatabase
-    private var popup: PopupMenu? = null
-    private val graphData: HashMap<String, Double> = HashMap()
 
-    init {
-        sortingAlog = SortingAlgorithms.INSERTION_SORT
-    }
+    private var popup: PopupMenu? = null
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(application)).get(MainViewModel::class.java)
         Stetho.initializeWithDefaults(this)
         setContentView(R.layout.activity_main)
-        initDb()
-        setUpGraph()
-    }
-
-    private fun setUpGraph() {
+        observeLiveDatas()
         CoroutineScope(Dispatchers.IO).launch {
-            graphData.clear()
-            for (item in SortingAlgorithms.values()) {
-                val avgTime = getAvgTime(item.alogName)
-                graphData[item.alogName] = avgTime
-                println("HASHMAP $graphData")
-            }
-            updateView()
+            viewModel.initDb()
+            viewModel.setUpGraph()
         }
     }
 
-    private suspend fun updateView() {
+    private fun observeLiveDatas() {
+        viewModel.sortingAlogrithmLiveData.observe(this, Observer { tv_alog_name.setText(it.alogName) })
+        viewModel.progressLiveData.observe(this, Observer { progress_layout.visibility = if(it) View.VISIBLE else View.GONE })
+        viewModel.outputLiveData.observe(this, Observer { tv_out_put.text = it })
+        viewModel.inputVariablesLiveData.observe(this, Observer { tv_input_variables.text = it })
+        viewModel.timeTakenLiveData.observe(this, Observer {
+            tv_avg_time_taken.text = "Average time: ${it.first.toString()} seconds"
+            tv_time_taken.text = "Time taken: ${it.second.toString()} seconds"
+        })
+        viewModel.graphLiveData.observe(this, Observer {
+            CoroutineScope(Dispatchers.IO).launch {
+                updateView(it)
+            }
+        })
+
+    }
+
+    private suspend fun updateView(it: HashMap<String, Double>) {
         var count = 1
         withContext(Dispatchers.Main){
             ll_graphLayout.removeAllViews()
         }
-        for (item in graphData) {
+        for (item in it) {
             val inflate = layoutInflater.inflate(R.layout.histogram_item, null)
             inflate.v_histogram.layoutParams = LinearLayout.LayoutParams(
                 convertDpToPixel(50.0.toFloat(), this).toInt()
@@ -68,8 +69,7 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             inflate.tv_histo_time_taken.text = item.value.toString()
             inflate.tv_algo.text = item.key
             val value = (360 / 7) * count
-            val valueOf =
-                Color.HSVToColor(floatArrayOf(value.toFloat(), 1.toFloat(), 0.5.toFloat()))
+            val valueOf = Color.HSVToColor(floatArrayOf(value.toFloat(), 1.toFloat(), 0.5.toFloat()))
             inflate.tv_algo.setTextColor(valueOf)
             inflate.tv_histo_time_taken.setTextColor(valueOf)
             inflate.v_histogram.setBackgroundColor(valueOf)
@@ -80,13 +80,9 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
     }
 
-    private fun initDb() {
-        db = Room.databaseBuilder(this, SortingDatabase::class.java, "SortingData").build()
-    }
-
     override fun onStart() {
         super.onStart()
-        tv_alog_name.setText(sortingAlog.alogName)
+
         tv_alog_name.setOnClickListener(View.OnClickListener {
             showPopup(it)
         })
@@ -102,90 +98,19 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     fun sort(view: View) {
-        progress_layout.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.Default).launch {
-            getResourceIntArray()
-        }
-    }
-
-    suspend fun getResourceIntArray() {
-        val intArray =
-            resources.getIntArray(R.array.dummy_100000_array)
-        /*intArrayOf(6, 2, 9, 34, 3, 6, -1, -11, -132, -4, 24, 23, 4)*/
-        /*intArrayOf(9,8,7,6,5,4,3,2,1,0,-1,-2)*/
-        updateTheInputString(intArray)
-        sortTheArray(intArray)
-    }
-
-    private suspend fun updateTheInputString(intArray: IntArray) {
-        withContext(Dispatchers.Main) {
-            if (intArray.size > 20) {
-                tv_input_variables.setText("Sorting an array containing 1 lakh random numbers:")
-            } else {
-                tv_input_variables.setText(intArray.contentToString())
-            }
-        }
-    }
-
-    private suspend fun sortTheArray(intArray: IntArray) {
-        startTime = System.currentTimeMillis();
-        val sort = sortingAlog.instance.sort(intArray)
-        endTime = System.currentTimeMillis()
-        updateTheOutputTimeAndResult(sort, endTime - startTime)
-    }
-
-    private suspend fun updateTheOutputTimeAndResult(intArray: IntArray, l: Long) {
-        val inSeconds = l.toDouble() / 1000
-        insertIntoDb(inSeconds, sortingAlog.alogName)
-        val avgTime = getAvgTime(sortingAlog.alogName)
-        updateAverageTime(avgTime)
-        getNumOfRecord()
-        withContext(Dispatchers.Main) {
-            progress_layout.visibility = View.GONE
-            if (intArray.size > 20) {
-                tv_out_put.setText("Sorted 1 lakh random integers")
-            } else {
-                tv_out_put.setText(intArray.contentToString())
-            }
-            tv_time_taken.text = "Time taken: $inSeconds seconds"
-            println("Output Elements: first 10 ${intArray.take(10)}")
-            println("Output Elements: last 10 ${intArray.takeLast(10)}")
-        }
-        setUpGraph()
-    }
-
-    suspend fun insertIntoDb(double: Double, algoName: String) {
-        db.getDao().insertSortingData(SortingSpeed(double, algoName))
-    }
-
-    suspend fun getAvgTime(algoName: String): Double {
-        return db.getDao().getAvgTimeOf(algoName)
-    }
-
-    suspend fun getNumOfRecord() {
-        val avgTimeOf = db.getDao().getCount()
-        withContext(Dispatchers.Main) {
-            println("Count: $avgTimeOf")
-        }
-    }
-
-    suspend fun updateAverageTime(avgTime: Double) {
-        withContext(Dispatchers.Main) {
-            tv_avg_time_taken.setText("Average time: $avgTime seconds")
-        }
+        viewModel.sort()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.insertion_sort -> sortingAlog = SortingAlgorithms.INSERTION_SORT
-            R.id.bubble_sort -> sortingAlog = SortingAlgorithms.BUBBLE_SORT
-            R.id.merge_sort -> sortingAlog = SortingAlgorithms.MERGE_SORT
-            R.id.selection_sort -> sortingAlog = SortingAlgorithms.SELECTION_SORT
-            R.id.quick_sort -> sortingAlog = SortingAlgorithms.QUICK_SORT
-            R.id.heap_sort -> sortingAlog = SortingAlgorithms.HEAP_SORT
-            R.id.radix_sort -> sortingAlog = SortingAlgorithms.RADIX_SORT
+            R.id.insertion_sort -> viewModel.setSortingAlgo(SortingAlgorithms.INSERTION_SORT)
+            R.id.bubble_sort -> viewModel.setSortingAlgo(SortingAlgorithms.BUBBLE_SORT)
+            R.id.merge_sort -> viewModel.setSortingAlgo(SortingAlgorithms.MERGE_SORT)
+            R.id.selection_sort -> viewModel.setSortingAlgo(SortingAlgorithms.SELECTION_SORT)
+            R.id.quick_sort -> viewModel.setSortingAlgo(SortingAlgorithms.QUICK_SORT)
+            R.id.heap_sort -> viewModel.setSortingAlgo(SortingAlgorithms.HEAP_SORT)
+            R.id.radix_sort -> viewModel.setSortingAlgo(SortingAlgorithms.RADIX_SORT)
         }
-        tv_alog_name.setText(sortingAlog.alogName)
         return true
     }
 
