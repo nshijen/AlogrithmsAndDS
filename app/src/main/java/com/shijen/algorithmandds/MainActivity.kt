@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 updateView(it)
             }
         })
-
     }
 
     private suspend fun updateView(it: HashMap<String, Double>) {
