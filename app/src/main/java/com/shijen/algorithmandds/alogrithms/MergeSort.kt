@@ -1,32 +1,33 @@
 package com.shijen.algorithmandds.alogrithms
 
 class MergeSort : Sorting {
-    override suspend fun sort(array: IntArray): IntArray {
-        val mergeSort = mergeSort(array, 0, array.size - 1)
+
+    override suspend fun sort(arrayList: ArrayList<Int>): ArrayList<Int> {
+        val mergeSort = mergeSort(arrayList, 0, arrayList.size - 1)
         return mergeSort
     }
 
-    fun mergeSort(intArray: IntArray, startPos: Int, endPos: Int): IntArray {
+    fun mergeSort(arrayList: ArrayList<Int>, startPos: Int, endPos: Int): ArrayList<Int> {
         if (endPos - startPos == 0) {
-            return intArray;
+            return arrayList;
         } else if (endPos - startPos == 1) {
-            if (intArray.get(endPos) >= intArray.get(startPos)) {
-                return intArray
+            if (arrayList.get(endPos) >= arrayList.get(startPos)) {
+                return arrayList
             } else {
-                val temp = intArray.get(startPos)
-                intArray[startPos] = intArray.get(endPos)
-                intArray[endPos] = temp
+                val temp = arrayList.get(startPos)
+                arrayList[startPos] = arrayList.get(endPos)
+                arrayList[endPos] = temp
             }
         } else {
             val median = (endPos + startPos) / 2
-            mergeSort(intArray, startPos, median)
-            mergeSort(intArray, median + 1, endPos)
-            merge(intArray, startPos, median, endPos)
+            mergeSort(arrayList, startPos, median)
+            mergeSort(arrayList, median + 1, endPos)
+            merge(arrayList, startPos, median, endPos)
         }
-        return intArray
+        return arrayList
     }
 
-    private fun merge(array: IntArray, start: Int, median: Int, endPos: Int) {
+    private fun merge(list: ArrayList<Int>, start: Int, median: Int, endPos: Int) {
         var firstFinished = false;
         var secondFinished = false;
         var firstArrPos = start
@@ -41,24 +42,24 @@ class MergeSort : Sorting {
                 secondFinished = true
             }
             if (!firstFinished && !secondFinished) {
-                if (array[firstArrPos] > array[secondArrPos]) {
-                    tempArray[count] = array[secondArrPos]
+                if (list[firstArrPos] > list[secondArrPos]) {
+                    tempArray[count] = list[secondArrPos]
                     secondArrPos++
                 } else {
-                    tempArray[count] = array[firstArrPos]
+                    tempArray[count] = list[firstArrPos]
                     firstArrPos++
                 }
             } else if (firstFinished) {
-                tempArray[count] = array[secondArrPos]
+                tempArray[count] = list[secondArrPos]
                 secondArrPos++
             } else {
-                tempArray[count] = array[firstArrPos]
+                tempArray[count] = list[firstArrPos]
                 firstArrPos++
             }
             count++
         }
         for (a in tempArray.withIndex()) {
-            array[(start + a.index)] = a.value
+            list[(start + a.index)] = a.value
         }
     }
 }

@@ -1,5 +1,5 @@
 package com.shijen.algorithmandds.alogrithms
 
 interface Sorting {
-     suspend fun sort(array:IntArray):IntArray
+     suspend fun sort(arrayList: ArrayList<Int>):ArrayList<Int>
 }

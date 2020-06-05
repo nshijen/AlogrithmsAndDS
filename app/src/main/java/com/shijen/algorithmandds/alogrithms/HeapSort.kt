@@ -1,25 +1,25 @@
 package com.shijen.algorithmandds.alogrithms
 
 class HeapSort:Sorting{
-    override suspend fun sort(array: IntArray): IntArray {
+    override suspend fun sort(arrayList: ArrayList<Int>): ArrayList<Int> {
         /** we can also use this method [heapifyReverseOrder]*/
-        val createHeap = createHeap(array);
+        val createHeap = createHeap(arrayList);
         deleteElements(createHeap)
         return createHeap
     }
 
-    fun heapifyReverseOrder(array:IntArray):IntArray{
-        val heap = IntArray(array.size)
-        var counter = array.size -1
+    fun heapifyReverseOrder(list:ArrayList<Int>):ArrayList<Int>{
+        val heap = ArrayList<Int>()
+        var counter = list.size -1
         while(counter>=0){
-            heap[counter]=array[counter]
+            heap[counter]=list[counter]
             heapifingReversively(heap,counter)
             counter--
         }
         return heap
     }
 
-    private fun deleteElements(createHeap: IntArray) {
+    private fun deleteElements(createHeap: ArrayList<Int>) {
         var lastElement = createHeap.size-1
         while(lastElement > 0){
             deleteElement(createHeap,lastElement)
@@ -28,7 +28,7 @@ class HeapSort:Sorting{
         }
     }
 
-    private fun adjust(heap: IntArray, lastElement: Int) {
+    private fun adjust(heap: ArrayList<Int>, lastElement: Int) {
         var swaped = true
         var pointer = 0;
         while(hasChild(pointer,lastElement) && swaped){
@@ -58,7 +58,7 @@ class HeapSort:Sorting{
     }
 
 
-    private fun heapifingReversively(heap: IntArray, pointer: Int) {
+    private fun heapifingReversively(heap: ArrayList<Int>, pointer: Int) {
         var swaped = true
         var tempPointer = pointer;
         var lastElement = heap.size-1
@@ -96,22 +96,22 @@ class HeapSort:Sorting{
         return 2*pointer+1<=lastElement
     }
 
-    private fun deleteElement(createHeap: IntArray, lastElement: Int) {
+    private fun deleteElement(createHeap: ArrayList<Int>, lastElement: Int) {
         swap(createHeap,lastElement,0)
     }
 
-    private fun createHeap(array: IntArray):IntArray {
-        val heap = IntArray(array.size)
+    private fun createHeap(array: ArrayList<Int>):ArrayList<Int> {
+        val heap = ArrayList<Int>()
         var counter = 0
         while(counter<array.size){
-            heap[counter]=array[counter]
+            heap.add(array.get(counter))
             compareAndSwap(heap,counter)
             counter++
         }
         return heap
     }
 
-    private fun compareAndSwap(array: IntArray, counter: Int) {
+    private fun compareAndSwap(array: ArrayList<Int>, counter: Int) {
         var pointer = counter
         while(hasParent(pointer)){
             var parentNode = (pointer - 1)/2
@@ -122,7 +122,7 @@ class HeapSort:Sorting{
         }
     }
 
-    private fun swap(array: IntArray, ele1: Int, ele2: Int) {
+    private fun swap(array: ArrayList<Int>, ele1: Int, ele2: Int) {
         val temp = array.get(ele1)
         array[ele1] = array[ele2]
         array[ele2] = temp

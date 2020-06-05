@@ -1,45 +1,45 @@
 package com.shijen.algorithmandds.alogrithms
 
 class QuickSort:Sorting {
-    override suspend fun sort(array: IntArray): IntArray {
-        quickSort(array,0,array.size-1);
-        return array
+    override suspend fun sort(arrayList: ArrayList<Int>): ArrayList<Int> {
+        quickSort(arrayList,0,arrayList.size-1);
+        return arrayList
     }
 
-    private fun quickSort(array: IntArray, start: Int, end: Int) {
+    private fun quickSort(arrayList: ArrayList<Int>, start: Int, end: Int) {
         val pivot = start;
         var low = start+1;
         var high = end
         if(low == end){
-            if(array[high] < array[pivot]){
-                val temp = array.get(pivot)
-                array[pivot] = array.get(high)
-                array[high] = temp
+            if(arrayList[high] < arrayList[pivot]){
+                val temp = arrayList.get(pivot)
+                arrayList[pivot] = arrayList.get(high)
+                arrayList[high] = temp
             }
             return
         }
         while (low<high){
-            while(low<=end && array.get(low)<array.get(pivot)){
+            while(low<=end && arrayList.get(low)<arrayList.get(pivot)){
                 low++
             }
-            while(high>=start+1 && array.get(high)>array.get(pivot)){
+            while(high>=start+1 && arrayList.get(high)>arrayList.get(pivot)){
                 high--
             }
             if(high>low){
-                val temp = array.get(low)
-                array[low] = array.get(high)
-                array[high] = temp
+                val temp = arrayList.get(low)
+                arrayList[low] = arrayList.get(high)
+                arrayList[high] = temp
              }
         }
         if(high>pivot){
-            val temp = array.get(high)
-            array[high] = array.get(pivot)
-            array[pivot] = temp
+            val temp = arrayList.get(high)
+            arrayList[high] = arrayList.get(pivot)
+            arrayList[pivot] = temp
         }
         if(((high-1)-start)>=1)
-            quickSort(array,start,high-1)
+            quickSort(arrayList,start,high-1)
 
         if(end-(high+1)>=1)
-        quickSort(array,high+1,end)
+        quickSort(arrayList,high+1,end)
     }
 }

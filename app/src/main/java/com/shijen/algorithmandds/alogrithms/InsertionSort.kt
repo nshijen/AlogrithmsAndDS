@@ -1,49 +1,27 @@
 package com.shijen.algorithmandds.alogrithms
 
 class InsertionSort : Sorting {
-    override suspend fun sort(array: IntArray): IntArray {
-        if (array.size <= 1) {
-            return array
+    override suspend fun sort(arrayList: ArrayList<Int>): ArrayList<Int> {
+        if (arrayList.size <= 1) {
+            return arrayList
         }
-        for (a in (1..(array.size - 1))) {
+        for (a in (1..(arrayList.size - 1))) {
             for (x in a - 1 downTo 0) {
-                if (array.get(a) >= array.get(x)) {
+                if (arrayList.get(a) >= arrayList.get(x)) {
                     val insertionPosition = x + 1
-                    shiftAndInsert(array, a, insertionPosition)
+                    arrayList.add(insertionPosition,arrayList.get(a))
+                    arrayList.removeAt(a)
                     break;
                 } else {
                     if (x == 0) {
                         val insertionPosition = x
-                        shiftAndInsert(array, a, insertionPosition)
+                        arrayList.add(insertionPosition,arrayList.get(a))
+                        arrayList.removeAt(a)
                         break;
                     }
                 }
             }
         }
-        return array
-    }
-    private fun shiftAndInsert(
-        array: IntArray,
-        insertionItemPosition: Int,
-        insertionPosition: Int
-    ) {
-        val insertionItem = array.get(insertionItemPosition)
-        if (insertionPosition == insertionItemPosition) {
-            return
-        }
-        shiftElements(array, insertionPosition, insertionItemPosition)
-        array[insertionPosition] = insertionItem
-    }
-
-    private fun shiftElements(
-        array: IntArray,
-        insertionPosition: Int,
-        insertionItemPostion: Int
-    ) {
-        for (a in insertionItemPostion downTo insertionPosition) {
-            if (a - 1 != -1) {
-                array[a] = array.get(a - 1)
-            }
-        }
+        return arrayList
     }
 }

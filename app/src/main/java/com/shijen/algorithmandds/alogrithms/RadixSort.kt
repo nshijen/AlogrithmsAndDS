@@ -1,11 +1,9 @@
 package com.shijen.algorithmandds.alogrithms
 
 class RadixSort : Sorting {
-    override suspend fun sort(array: IntArray): IntArray {
-        var finalArrayList: List<Int> = array.toList()
-        val bucketSort =
-            bucketSort(finalArrayList, lengthOfLargestNum(finalArrayList as ArrayList<Int>))
-        return bucketSort.toIntArray()
+    override suspend fun sort(arrayList: ArrayList<Int>): ArrayList<Int> {
+        val finalArrayList: List<Int> = arrayList
+        return bucketSort(finalArrayList, lengthOfLargestNum(finalArrayList as ArrayList<Int>))
     }
 
     fun getUnitValues(num: Int, postion: Int): Int {
@@ -61,7 +59,7 @@ class RadixSort : Sorting {
     }
 
     fun lengthOfLargestNum(tempArrayList: ArrayList<Int>): Int {
-        var x: Int = 0;
+        var x = 0;
         for (temp in tempArrayList) {
             if (temp > Math.abs(x))
                 x = temp

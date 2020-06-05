@@ -41,28 +41,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .build()
     }
 
-    fun getResourceIntArray(): IntArray {
-        return applicationContext.resources.getIntArray(R.array.dummy_100000_array)
-        /*intArrayOf(6, 2, 9, 34, 3, 6, -1, -11, -132, -4, 24, 23, 4)*/
+    fun getResourceIntArray(): ArrayList<Int> {
+
+        return applicationContext.resources.getIntArray(R.array.dummy_100000_array).toCollection(ArrayList<Int>())
+        /*arrayListOf(6, 2, 9, 34, 3, 6, -1, -11, -132, -4, 24, 23, 4)*/
+
+
         /*intArrayOf(9,8,7,6,5,4,3,2,1,0,-1,-2)*/
     }
 
-    private fun updateTheInputString(intArray: IntArray) {
-        if (intArray.size > 20) {
+    private fun updateTheInputString(arrayList: ArrayList<Int>) {
+        if (arrayList.size > 20) {
             inputVariablesLiveData.postValue("Sorting an array containing 1 lakh random numbers:")
         } else {
-            inputVariablesLiveData.postValue(intArray.contentToString())
+            inputVariablesLiveData.postValue(arrayList.toString())
         }
     }
 
-    private suspend fun sortTheArray(intArray: IntArray) {
+    private suspend fun sortTheArray(arrayList: ArrayList<Int>) {
         startTime = System.currentTimeMillis();
-        val sortedArray = sortingAlogrithmLiveData.value?.instance?.sort(intArray)
+        val sortedList = sortingAlogrithmLiveData.value?.instance?.sort(arrayList)
         endTime = System.currentTimeMillis()
-        updateTheOutputTimeAndResult(sortedArray, endTime - startTime)
+        updateTheOutputTimeAndResult(sortedList, endTime - startTime)
     }
 
-    private fun updateTheOutputTimeAndResult(intArray: IntArray?, timeTaken: Long) {
+    private fun updateTheOutputTimeAndResult(arrayList: ArrayList<Int>?, timeTaken: Long) {
         val timeTakenSeconds = timeTaken.toDouble() / 1000
         var avgTime: Double? = null
         sortingAlogrithmLiveData.value?.let {
@@ -71,11 +74,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             timeTakenLiveData.postValue(Pair(avgTime, timeTakenSeconds))
         }
         progressLiveData.postValue(false)
-        intArray?.let {
+        arrayList?.let {
             if (it.size > 20) {
                 outputLiveData.postValue("Sorted 1 lakh random integers")
             } else {
-                outputLiveData.postValue(it.contentToString())
+                outputLiveData.postValue(it.toString())
             }
             println("Output Elements: first 10 ${it.take(10)}")
             println("Output Elements: last 10 ${it.takeLast(10)}")
